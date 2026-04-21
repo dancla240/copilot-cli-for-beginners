@@ -13,19 +13,56 @@ def print_menu():
 
 
 def get_user_choice() -> str:
-    return input("Choose an option (1-5): ").strip()
+    """Prompt the user to pick a menu option (1-5). Returns a valid choice string."""
+    choice = input("Choose an option (1-5): ").strip()
+    if not choice:
+        print("Please enter a number between 1 and 5.")
+        return ""
+    if not choice.isdigit() or choice not in ("1", "2", "3", "4", "5"):
+        print(f'"{choice}" is not a valid option. Please enter a number between 1 and 5.')
+        return ""
+    return choice
 
 
 def get_book_details():
+    """Interactively prompt the user for book details via the terminal.
+
+    Prompts for title, author, and publication year in sequence.
+    Validates each field before proceeding to the next:
+    - Title and author must be non-empty strings.
+    - Year must be a non-empty, numeric value.
+
+    Returns:
+        tuple[str, str, int]: A (title, author, year) tuple if all inputs are valid.
+        None: If any field fails validation. An error message is printed to stdout
+              describing which field was invalid and why.
+
+    Example:
+        details = get_book_details()
+        if details is None:
+            return  # user gave invalid input
+        title, author, year = details
+    """
     title = input("Enter book title: ").strip()
+    if not title:
+        print("Error: Title cannot be empty.")
+        return None
+
     author = input("Enter author: ").strip()
+    if not author:
+        print("Error: Author cannot be empty.")
+        return None
 
     year_input = input("Enter publication year: ").strip()
+    if not year_input:
+        print("Error: Year cannot be empty.")
+        return None
+
     try:
         year = int(year_input)
     except ValueError:
-        print("Invalid year. Defaulting to 0.")
-        year = 0
+        print(f'Error: "{year_input}" is not a valid year. Please enter a number.')
+        return None
 
     return title, author, year
 
